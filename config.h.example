@@ -1,0 +1,7 @@
+// Adafruit IO credentials
+#define IO_USERNAME  "<IO_USERNAME>"
+#define IO_KEY       "<IO_KEY>"
+
+// Wifi credentials
+#define WIFI_SSID "<SSID>>"
+#define WIFI_PASS "<PASSWORD>"
