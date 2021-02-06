@@ -30,9 +30,11 @@ uint32_t colors[] = {0xff0000, 0xFF7F00, 0xFFFF00, 0x00FF00, 0x0000FF, 0xb6fff4,
 int num_colors = sizeof(colors) / sizeof(colors[0]);
 
 int current_color = -1;
+bool touch_event = false;
 
 void ICACHE_RAM_ATTR ISRhandleTouch() {
-  handleTouch();
+  touch_event = true;
+  //Serial.println("Touch event received");
 }
 
 void configModeCallback (WiFiManager *myWiFiManager) {
@@ -70,7 +72,6 @@ void setup() {
   pinMode(TOUCH_PIN, INPUT_PULLUP);
 
   attachInterrupt(digitalPinToInterrupt(TOUCH_PIN), ISRhandleTouch, FALLING);
-
 
   Serial.print("Connecting to Adafruit IO");
   io.connect();
@@ -110,12 +111,11 @@ void loop() {
       handleTouch();
     }
   }
-/*
-  int touch_state = digitalRead(TOUCH_PIN);
-  if (touch_state == 0) {
+  if (touch_event == true) {
     handleTouch();
+    touch_event = false;
   }
-*/
+  
   int button_state = digitalRead(BUTTON_PIN);
   if (button_state == 0) {
     sendColor(colors[9]);
